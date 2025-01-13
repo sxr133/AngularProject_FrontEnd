@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { Listing } from '../types';
 import { FormsModule } from '@angular/forms';
@@ -21,13 +21,19 @@ export class ListingDataFormComponent implements OnInit {
   description: string = '';
   price: number = 0;
 
-  @Output() onSubmit = new EventEmitter<Listing>();
-
-  constructor(
-    private router: Router,
-  ) { }
+  @Output() onSubmit = new EventEmitter<{ name: string; description: string; price: number }>();
 
   ngOnInit(): void {
+    this.initializeFields();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['currentName'] || changes['currentDescription'] || changes['currentPrice']) {
+      this.initializeFields();
+    }
+  }
+
+  private initializeFields(): void {
     this.name = this.currentName;
     this.description = this.currentDescription;
     this.price = this.currentPrice;
@@ -35,11 +41,9 @@ export class ListingDataFormComponent implements OnInit {
 
   onButtonClicked(): void {
     this.onSubmit.emit({
-      id: '',
       name: this.name,
       description: this.description,
       price: Number(this.price),
-      views: 0,
     });
   }
 }

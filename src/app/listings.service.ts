@@ -45,7 +45,7 @@ export class ListingsService {
   createListing(name: string, description: string, price: number): Observable<Listing> {
     return this.http.post<Listing>(this.apiUrl, 
      { name, description, price }, 
-      httpOptions);
+      httpOptions,);
   }
 
   editListing(id: string, name: string, description: string, price: number): Observable<Listing> {
@@ -53,6 +53,6 @@ export class ListingsService {
       {
         name, description, price
       }, 
-      httpOptions);
+      httpOptions,);
   }
 }
