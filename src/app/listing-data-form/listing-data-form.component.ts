@@ -1,24 +1,25 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { Listing } from '../types';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-listing-data-form',
-  standalone: true,  // Ensure this is a standalone component
-  imports: [CommonModule, FormsModule],  // Add RouterModule to imports
+  standalone: true, // Ensure this is a standalone component
+  imports: [FormsModule], // Add RouterModule to imports
   templateUrl: './listing-data-form.component.html',
-  styleUrl: './listing-data-form.component.css'
+  styleUrls: ['./listing-data-form.component.css']
 })
-export class ListingDataFormComponent {
-  @Input() buttonText?: string;
-  @Input() currentName: string = '';
-  @Input() currentDescription: string = '';
-  @Input() currentPrice: string = '';
+
+export class ListingDataFormComponent implements OnInit {
+  @Input() buttonText = '';
+  @Input() currentName = '';
+  @Input() currentDescription = '';
+  @Input() currentPrice = 0;
+
   name: string = '';
   description: string = '';
-  price: string = '';
+  price: number = 0;
 
   @Output() onSubmit = new EventEmitter<Listing>();
 
@@ -33,20 +34,12 @@ export class ListingDataFormComponent {
   }
 
   onButtonClicked(): void {
-    const priceValue = Number(this.price);
-    if (isNaN(priceValue) || priceValue <= 0) {
-      // Handle invalid price
-      alert('Please enter a valid price.');
-      return;
-    }
-    
-    // Emit the listing data
     this.onSubmit.emit({
-      id: '',  // Assuming id is generated elsewhere or will be assigned later
+      id: '',
       name: this.name,
       description: this.description,
-      price: priceValue,
-      views: 0,  // Default value for views
+      price: Number(this.price),
+      views: 0,
     });
   }
 }

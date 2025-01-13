@@ -16,7 +16,8 @@ const httpOptions = {
 
 export class ListingsService {
   private apiUrl = 'http://localhost:8000/api/listings';
-  private apiUrl2 = 'http://localhost:8000/api/users';;
+  private apiUrl2 = 'http://localhost:8000/api/users';
+
   constructor(
     private http: HttpClient,
   ) { }
@@ -34,19 +35,23 @@ export class ListingsService {
   }
 
   getListingsForUser(): Observable<Listing[]> {
-    return this.http.get<Listing[]>(`${this.apiUrl2}/99999/listings`);
+    return this.http.get<Listing[]>(`${this.apiUrl2}/12345/listings`);
   }
 
   deleteListing(id: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
   }
 
-  createListing(listing: Listing): Observable<Listing> {
+  createListing(name: string, description: string, price: number): Observable<Listing> {
     return this.http.post<Listing>(this.apiUrl, 
+     { name, description, price }, 
+      httpOptions);
+  }
+
+  editListing(id: string, name: string, description: string, price: number): Observable<Listing> {
+    return this.http.post<Listing>(`${this.apiUrl}/${id}`, 
       {
-        name: listing.name,
-        description: listing.description,
-        price: listing.price
+        name, description, price
       }, 
       httpOptions);
   }
