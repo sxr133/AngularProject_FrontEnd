@@ -24,11 +24,20 @@ export class NewListingPageComponent implements OnInit {
   }
 
   onSubmit({ name, description, price } : { name: string; description: string; price: number }) : void {
+    console.log('--------------------------------');
     console.log('name', name);
     console.log('description', description);
     console.log('price', price);
-    this.listingsService.createListing(name, description, price).subscribe(() => {
-      this.router.navigateByUrl('/my-listings');
+    this.listingsService.createListing(name, description, price).subscribe({
+      next: (listing) => {
+        console.log('Listing created:', listing);
+        this.router.navigateByUrl('/my-listings');
+      },
+      error: (error) => {
+        console.error('Error creating listing:', error);
+        // Optionally, show an error message to the user
+        alert('An error occurred while creating the listing. Please try again.');
+      },
     });
   }
 }

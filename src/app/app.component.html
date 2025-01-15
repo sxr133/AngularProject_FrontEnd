@@ -1,24 +1,16 @@
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * Delete the template below * * * * * * * * * -->
-<!-- * * * * * * * to get started with your project! * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <div id="page-wrap">
-  <div id="max-width-column">
-    <app-nav-bar />
+  <!-- Authenticated User View -->
+  <div id="max-width-column" *ngIf="user$ | async as user">
+    <app-nav-bar></app-nav-bar>
     <div id="content-wrap">
-      <router-outlet />
+      <router-outlet></router-outlet>
     </div>
+    <button (click)="signOutClicked()">Sign Out</button>
+  </div>
+
+  <!-- Unauthenticated User View -->
+  <div id="max-width-column" *ngIf="!(user$ | async)">
+    <h1>You need to sign in first</h1>
+    <button (click)="signInClicked()">Sign in with Google</button>
   </div>
 </div>

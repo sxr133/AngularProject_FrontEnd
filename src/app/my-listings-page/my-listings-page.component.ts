@@ -20,7 +20,19 @@ export class MyListingsPageComponent implements OnInit {
   ) { }
   
   ngOnInit(): void {
-    this.listingsService.getListingsForUser().subscribe(listings => this.listings = listings);
+    this.listingsService.getListingsForUser().subscribe({
+      next: (listings) => {
+        console.log('Listings fetched:', listings); // Log the fetched listings
+        if (Array.isArray(listings)) {
+          this.listings = listings;
+        } else {
+          console.error('Expected an array, but got:', listings);
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching listings:', err);
+      },
+    });
   }
 
   onDeleteClicked(listingId: string): void {
